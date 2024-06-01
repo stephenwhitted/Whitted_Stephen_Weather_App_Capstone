@@ -1,32 +1,41 @@
-// Requiring and configuring the .env file to access its variables
-require('dotenv').config();
-// Requiring express
 const express = require('express');
-// Creating the express server and storing inside the app variable
-const app = express();
-// Port in which the server will run on
-const PORT = process.env.PORT || 8000;
-// Requiring example router
-const userRouter = require('./routes/users.js');
+const http = require('http');
+const socketIo = require('socket.io');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
-// Configuring the server to accept and parse JSON data.
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
 app.use(express.json());
 
-//Custom Middlware
-app.use((req, res, next) => {
-  console.log(`A ${req.method} request was made to ${req.url}`);
-  next();
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
+
+// Routes
+app.use('/api/weather', require('./routes/weather'));
+
+io.on('connection', (socket) => {
+  console.log('New client connected');
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
 });
 
-// Connecting the router to the server
-app.use('/users', userRouter);
-
-// Error Handling Middlware
-app.use((err, req, res, next) => {
-  res.status(500).send('Something went wrong.');
-});
-
-// Calling the listen function telling the server to listen on port 3000
-app.listen(PORT, () => {
-  console.log(`Listening on port: ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
