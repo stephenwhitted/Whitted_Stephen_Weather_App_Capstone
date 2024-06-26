@@ -1,18 +1,15 @@
+// /weather-app/frontend/src/components/WeatherDisplay.jsx
 import React from 'react';
-import WeatherCard from './WeatherCard';
 
-const WeatherDisplay = ({ weather, forecast }) => (
+const WeatherDisplay = ({ weather }) => (
   <div className="weather-display">
-    <h3>Current Weather</h3>
-    <WeatherCard title="Temperature" value={`${weather.main.temp}°K`} />
-    <WeatherCard title="Humidity" value={`${weather.main.humidity}%`} />
-    <WeatherCard title="Conditions" value={weather.weather[0].description} />
-    <h3>3-Hour Forecast</h3>
-    <div className="forecast">
-      {forecast.map((f, index) => (
-        <WeatherCard key={index} title={new Date(f.dt * 1000).toLocaleTimeString()} value={`${f.main.temp}°K, ${f.weather[0].description}`} />
-      ))}
-    </div>
+    {weather.map((entry) => (
+      <div key={entry.uniqueWeatherId} className="weather-card">
+        <h2>{entry.city}, {entry.state}</h2>
+        <p>Unique ID: {entry.uniqueWeatherId}</p>
+        <p>Timestamp: {new Date(entry.timestamp).toLocaleString()}</p>
+      </div>
+    ))}
   </div>
 );
 

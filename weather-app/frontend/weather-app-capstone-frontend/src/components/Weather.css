@@ -1,0 +1,19 @@
+/* src/components/Weather.css */
+.weather-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .weather-container input {
+    margin: 10px 0;
+    padding: 5px;
+  }
+  
+  .weather-container button {
+    padding: 5px 10px;
+  }
+  
+  .weather-data {
+    margin-top: 20px;
+  }
+  
