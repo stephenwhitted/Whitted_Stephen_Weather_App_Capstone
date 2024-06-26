@@ -1,16 +1,30 @@
-// /weather-app/frontend/src/components/WeatherDisplay.jsx
 import React from 'react';
 
-const WeatherDisplay = ({ weather }) => (
-  <div className="weather-display">
-    {weather.map((entry) => (
-      <div key={entry.uniqueWeatherId} className="weather-card">
-        <h2>{entry.city}, {entry.state}</h2>
-        <p>Unique ID: {entry.uniqueWeatherId}</p>
-        <p>Timestamp: {new Date(entry.timestamp).toLocaleString()}</p>
-      </div>
-    ))}
-  </div>
-);
+const WeatherDisplay = ({ weather, forecast }) => {
+  // Ensure weather is an array
+  const weatherArray = Array.isArray(weather) ? weather : [weather];
+
+  return (
+    <div className="weather-display">
+      <h2>Current Weather</h2>
+      {weatherArray.map((item, index) => (
+        <div key={index}>
+          <p>City: {item.name}</p>
+          <p>Temperature: {item.main.temp}°C</p>
+          <p>Weather: {item.weather[0].description}</p>
+        </div>
+      ))}
+
+      <h2>Forecast</h2>
+      {forecast && forecast.map((item, index) => (
+        <div key={index}>
+          <p>Date: {new Date(item.dt_txt).toLocaleString()}</p>
+          <p>Temperature: {item.main.temp}°C</p>
+          <p>Weather: {item.weather[0].description}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default WeatherDisplay;
