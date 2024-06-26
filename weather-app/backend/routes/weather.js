@@ -1,8 +1,7 @@
-// /weather-app/backend/routes/weather.js
 const express = require('express');
 const router = express.Router();
 const Weather = require('../models/Weather');
-
+//CRUD OPERATIONS BELOW
 // Create a weather entry
 router.post('/', async (req, res) => {
   const { city, state, uniqueWeatherId } = req.body;

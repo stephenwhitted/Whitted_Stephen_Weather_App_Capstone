@@ -1,4 +1,3 @@
-// /weather-app/backend/models/Weather.js
 const mongoose = require('mongoose');
 
 const weatherSchema = new mongoose.Schema({
