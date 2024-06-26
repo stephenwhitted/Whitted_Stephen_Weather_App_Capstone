@@ -1,44 +1,73 @@
-// /weather-app/frontend/src/components/WeatherForm.jsx
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const WeatherForm = ({ fetchWeather }) => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [uniqueWeatherId, setUniqueWeatherId] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleCityStateSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('/api/weather', { city, state, uniqueWeatherId });
-      fetchWeather();
-    } catch (error) {
-      console.error('Error creating weather entry:', error);
-    }
+    const query = `q=${city},${state}`;
+    fetchWeather(query);
+  };
+
+  const handleLatLonSubmit = async (e) => {
+    e.preventDefault();
+    const query = `lat=${latitude}&lon=${longitude}`;
+    fetchWeather(query);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        placeholder="City"
-      />
-      <input
-        type="text"
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-        placeholder="State"
-      />
-      <input
-        type="text"
-        value={uniqueWeatherId}
-        onChange={(e) => setUniqueWeatherId(e.target.value)}
-        placeholder="Unique Weather ID"
-      />
-      <button type="submit">Get Weather</button>
-    </form>
+    <div>
+      <form onSubmit={handleCityStateSubmit}>
+        <div>
+          <label htmlFor="city">City:</label>
+          <input
+            type="text"
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="state">State:</label>
+          <input
+            type="text"
+            id="state"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Get Weather by City and State</button>
+      </form>
+
+      <form onSubmit={handleLatLonSubmit}>
+        <div>
+          <label htmlFor="latitude">Latitude:</label>
+          <input
+            type="text"
+            id="latitude"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="longitude">Longitude:</label>
+          <input
+            type="text"
+            id="longitude"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Get Weather by Latitude and Longitude</button>
+      </form>
+    </div>
   );
 };
 

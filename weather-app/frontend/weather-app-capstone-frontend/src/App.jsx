@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -23,8 +22,8 @@ function App() {
     setError('');
     console.log("Fetching weather for query:", query); // Debugging statement
     try {
-      const weatherResponse = await axios.get(`http://localhost:5000/api/weather/current?query=${query}`);
-      const forecastResponse = await axios.get(`http://localhost:5000/api/weather/forecast?query=${query}`);
+      const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${import.meta.env.VITE_API_KEY}`);
+      const forecastResponse = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?${query}&appid=${import.meta.env.VITE_API_KEY}`);
       setWeather(weatherResponse.data);
       setForecast(forecastResponse.data.list.slice(0, 8)); // Get the next 24 hours (3-hour intervals)
       setDayNightMode(weatherResponse.data.sys.sunrise, weatherResponse.data.sys.sunset);
