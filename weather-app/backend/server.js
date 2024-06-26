@@ -26,9 +26,14 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log('MongoDB connecte
 // Routes
 app.use('/api/weather', require('./routes/weather'));
 
+// Add a route for the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the Weather App API');
+});
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('frontend/build'));
+  app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'));
