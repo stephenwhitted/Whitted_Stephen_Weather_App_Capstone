@@ -1,9 +1,9 @@
 const express = require('express');
 const http = require('http');
-const axios = require('axios');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -50,7 +50,7 @@ app.get('/api/weather/forecast', async (req, res) => {
   }
 });
 
-// Serve static assets if in production
+// Serve static assets if in production *
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 
